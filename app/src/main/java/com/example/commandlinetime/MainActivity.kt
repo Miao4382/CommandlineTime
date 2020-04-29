@@ -72,7 +72,6 @@ class MainActivity : AppCompatActivity() {
     if (cmd == "init") {
       val timeFile = File(filesDir, "time.txt")
       val fout = FileOutputStream(timeFile)
-      fout.write("".toByteArray())
     }
 
     if (cmd == "start") {
@@ -177,9 +176,9 @@ class MainActivity : AppCompatActivity() {
     val fout = FileOutputStream(timeFile, true)
     val contents = timeFile.readText()
 
-    // check if the
+    // check if the current date is in the time.txt, if not, we add it, as it represents the begining of one day
     if (!contents.contains(startTime[7]))
-      fout.write((startTime[7] + "\n").toByteArray())
+      fout.write(("\n\n${startTime[7]}\n").toByteArray())
 
     // write the specific line of this activity to time.txt
     fout.write(("${startTime[4]}:${startTime[5]}:${startTime[6]}").toByteArray())   // start time hh:mm:ss
