@@ -14,6 +14,7 @@ class MainActivity : AppCompatActivity() {
   val MAX_ACTIVITY_INTERVAL = 86399   // only record activity less than this amount of seconds
   val MIN_ACTIVITY_INTERVAL = 2       // only record activity longer than this amount of seconds
   val WEEKDAYS = listOf<String>("Sun.", "Mon.", "Tue.", "Wed.", "Thur.", "Fri.", "Sat.")
+  val util = Utility()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -36,7 +37,7 @@ class MainActivity : AppCompatActivity() {
 
   private fun parseCommand() {
 
-    val cmd = Utility().getCommandType(editText.text.toString())
+    val cmd = util.getCommandType(editText.text.toString())
 //    Toast.makeText(this, cmd, Toast.LENGTH_SHORT).show()
 
     if (cmd == "showraw") {
@@ -83,6 +84,21 @@ class MainActivity : AppCompatActivity() {
       updateStatusTextByTempFile()
     }
 
+    if (cmd == "plot") {
+      // check if the command is matching the syntax
+      val fullCommand = editText.text.toString()
+
+      if (!util.checkPlotSyntax(fullCommand))
+        Toast.makeText(this, "Syntax error!", Toast.LENGTH_SHORT).show()
+      else {
+        // start Plot activity and pass the full command to it
+        val intent = Intent(this, Plot::class.java)
+        intent.putExtra("cmd", fullCommand)   // pass command to Plot activity
+        startActivity(intent)
+      }
+
+    }
+
     // reset the edit text view
     editText.text.clear()
   }
@@ -98,7 +114,7 @@ class MainActivity : AppCompatActivity() {
 
 
     // check if activity was provided
-    val currentAct = Utility().getActivity(editText.text.toString())
+    val currentAct = util.getActivity(editText.text.toString())
     if (currentAct == "NOACTIVITY") {
       Toast.makeText(this, "You should provide an activity", Toast.LENGTH_SHORT).show()
       return false
@@ -134,7 +150,7 @@ class MainActivity : AppCompatActivity() {
   }
 
   /* endRecording()
-  * This function will check if temp file exist. If so, it will parse its content and update time.txt
+  * This function will check if temp.txt exist. If so, it will parse its content and update time.txt
   * If not, will show error message
   * */
   private fun endRecording(): Boolean {
@@ -187,19 +203,19 @@ class MainActivity : AppCompatActivity() {
     fout.write(("$hour:$minute:$second").toByteArray())   // end time hh:mm:ss
     fout.write((" < ").toByteArray())
     if (hourElapsed > 0)
-      fout.write(("${hourElapsed}h ").toByteArray())
+      fout.write(("${String.format("%02d", hourElapsed)}h ").toByteArray())
     if (minElapsed > 0)
-      fout.write(("${minElapsed}m ").toByteArray())
+      fout.write(("${String.format("%02d", minElapsed)}m ").toByteArray())
     if (secElapsed > 0)
-      fout.write(("${secElapsed}s ").toByteArray())
+      fout.write(("${String.format("%02d", secElapsed)}s ").toByteArray())
     fout.write(("> ").toByteArray())
-    fout.write((startTime[0] + "\n").toByteArray())
+    fout.write((startTime[0] + "\n").toByteArray())   // write activity details
 
     // delete temp file
     tempFile.delete()
 
     // reset status text view and Toast notice
-    textViewStatus.text = Utility().randomQuote()
+    textViewStatus.text = util.randomQuote()
     Toast.makeText(this, "Finished", Toast.LENGTH_SHORT).show()
 
     return true

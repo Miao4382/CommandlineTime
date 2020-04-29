@@ -29,6 +29,12 @@
 
         </activity>
 
+        <activity
+            android:name=".Plot"
+            android:screenOrientation="portrait">
+
+        </activity>
+
     </application>
 
 </manifest>
