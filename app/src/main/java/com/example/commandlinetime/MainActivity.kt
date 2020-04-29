@@ -90,13 +90,15 @@ class MainActivity : AppCompatActivity() {
 
       if (!util.checkPlotSyntax(fullCommand))
         Toast.makeText(this, "Syntax error!", Toast.LENGTH_SHORT).show()
+      else if (!isFileExist("time.txt")) {
+        Toast.makeText(this, "No record file found!", Toast.LENGTH_SHORT).show()
+      }
       else {
         // start Plot activity and pass the full command to it
         val intent = Intent(this, Plot::class.java)
         intent.putExtra("cmd", fullCommand)   // pass command to Plot activity
         startActivity(intent)
       }
-
     }
 
     // reset the edit text view
@@ -234,5 +236,7 @@ class MainActivity : AppCompatActivity() {
     }
   }
 
-
+  private fun isFileExist(filename: String): Boolean {
+    return File(filesDir, filename).exists()
+  }
 }

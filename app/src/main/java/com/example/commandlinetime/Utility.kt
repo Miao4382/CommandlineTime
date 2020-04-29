@@ -1,5 +1,6 @@
 package com.example.commandlinetime
 
+import java.io.File
 import java.lang.Character.isLetter
 
 class Utility {
@@ -84,5 +85,26 @@ class Utility {
   * */
   fun isTimeRecordLine(line: String): Boolean {
     return line.length >= 22 && line[2] == ':' && line[5] == ':' && line[11] == ':' && line[14] == ':' && line[8] == '~' && line[18] == '<'
+  }
+
+  /* getTimeInSecByLine()
+  * Will extract the time encoded in the time record line
+  * If the line is not a valid time record line, return 0
+  * */
+  fun getTimeInSecByLine(line: String): Long {
+    if (!isTimeRecordLine(line))
+      return 0
+    // get string between < >, which encodes the time of this activity
+    val time = line.substring(20, line.indexOf('>') - 1)
+    var h: Long = 0
+    var m: Long = 0
+    var s: Long = 0
+    if (time.contains('h'))
+      h = time.substring(time.indexOf('h') - 2, time.indexOf('h')).toLong()
+    if (time.contains('m'))
+      m = time.substring(time.indexOf('m') - 2, time.indexOf('m')).toLong()
+    if (time.contains('s'))
+      s = time.substring(time.indexOf('s') - 2, time.indexOf('s')).toLong()
+    return h * 3600 + m * 60 + s
   }
 }

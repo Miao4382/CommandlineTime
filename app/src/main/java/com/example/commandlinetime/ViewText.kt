@@ -18,9 +18,9 @@ class ViewText : AppCompatActivity() {
         // check if file can read or not
         if (timeFile.canRead()) {
             val text = timeFile.readText()
-            textView.text = if (text.isEmpty()) "It looks like you don't have any record yet." else text
+            textViewPlotDetail.text = if (text.isEmpty()) "It looks like you don't have any record yet." else text
         } else {
-            textView.text = "No raw data file found.\n"
+            textViewPlotDetail.text = "No raw data file found.\n"
         }
     }
 

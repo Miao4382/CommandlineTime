@@ -17,9 +17,9 @@ class ViewTextTemp : AppCompatActivity() {
         // check if file can read or not
         if (timeFile.canRead()) {
             val text = timeFile.readText()
-            textView.text = if (text.isEmpty()) "Temp file empty" else text
+            textViewPlotDetail.text = if (text.isEmpty()) "Temp file empty" else text
         } else {
-            textView.text = "No temp file found.\n"
+            textViewPlotDetail.text = "No temp file found.\n"
         }
     }
 
