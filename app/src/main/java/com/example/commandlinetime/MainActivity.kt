@@ -108,13 +108,14 @@ class MainActivity : AppCompatActivity() {
     val fout = FileOutputStream(tempFile)
     val c = Calendar.getInstance()
     val year = String.format("%04d", c.get(Calendar.YEAR))
-    val month = String.format("%02d", c.get(Calendar.MONTH))
+    val month = String.format("%02d", c.get(Calendar.MONTH))    // month start with 0
     val day = String.format("%02d", c.get(Calendar.DAY_OF_MONTH))
     val hour = String.format("%02d", c.get(Calendar.HOUR_OF_DAY))
     val minute = String.format("%02d", c.get(Calendar.MINUTE))
     val second = String.format("%02d", c.get(Calendar.SECOND))
 
-    val date = month + "/" + day + "/" + year + " " + WEEKDAYS[c.get(Calendar.DAY_OF_WEEK)]
+    // day_of_week start with 1: Sunday
+    val date = "${String.format("%02d", c.get(Calendar.MONTH) + 1)}/$day/$year ${WEEKDAYS[c.get(Calendar.DAY_OF_WEEK) - 1]}"
 
     fout.write((currentAct + "\n").toByteArray())
     fout.write((year + "\n").toByteArray())
@@ -176,7 +177,7 @@ class MainActivity : AppCompatActivity() {
     val fout = FileOutputStream(timeFile, true)
     val contents = timeFile.readText()
 
-    // check if the current date is in the time.txt, if not, we add it, as it represents the begining of one day
+    // check if the current date is in the time.txt, if not, we add it, as it represents the beginning of one day
     if (!contents.contains(startTime[7]))
       fout.write(("\n\n${startTime[7]}\n").toByteArray())
 
