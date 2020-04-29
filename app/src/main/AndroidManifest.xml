@@ -35,6 +35,12 @@
 
         </activity>
 
+        <activity
+            android:name=".Summary"
+            android:screenOrientation="portrait">
+
+        </activity>
+
     </application>
 
 </manifest>

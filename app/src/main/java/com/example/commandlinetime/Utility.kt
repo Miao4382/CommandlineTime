@@ -87,6 +87,14 @@ class Utility {
     return line.length >= 22 && line[2] == ':' && line[5] == ':' && line[11] == ':' && line[14] == ':' && line[8] == '~' && line[18] == '<'
   }
 
+  /* isDateTitleLine()
+  * will check if the line is automatically generated date title. It should have following format:
+  *
+  * */
+  fun isDateTitleLine(line: String): Boolean {
+    return (line.length >= 15 && (line[0] == '0' || line[1] == '1') && line[2] == '/' && line[5] == '/' && line[10] == ' ' && line[line.lastIndex] == '.')
+  }
+
   /* getTimeInSecByLine()
   * Will extract the time encoded in the time record line
   * If the line is not a valid time record line, return 0

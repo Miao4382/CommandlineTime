@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity() {
       updateStatusTextByTempFile()
     }
 
-    if (cmd == "plot") {
+    if (cmd == "plot" || cmd == "summary") {
       // check if the command is matching the syntax
       val fullCommand = editText.text.toString()
 
@@ -95,7 +95,10 @@ class MainActivity : AppCompatActivity() {
       }
       else {
         // start Plot activity and pass the full command to it
-        val intent = Intent(this, Plot::class.java)
+
+        val intent = if (cmd == "plot") Intent(this, Plot::class.java)
+        else Intent(this, Summary::class.java)
+
         intent.putExtra("cmd", fullCommand)   // pass command to Plot activity
         startActivity(intent)
       }
